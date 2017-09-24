@@ -85,7 +85,11 @@ class AdjacencyList(object):
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
-        pass
+        for i in self.adjacency_list[hash(node.data)].list
+            if node_2.data == self.adjacency_list[hash(node.data)].i.to_node:
+                return true
+        else: 
+            return false
         
     def neighbors(self, node):
         pass
