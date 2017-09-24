@@ -24,7 +24,8 @@ A Graph has following methods:
 from io import open
 from operator import itemgetter
 
-def construct_graph_from_file(graph,file_path):
+
+def construct_graph_from_file(graph, file_path):
     """
     TODO: read content from file_path, then add nodes and edges to graph object
 
@@ -33,72 +34,83 @@ def construct_graph_from_file(graph,file_path):
     In example, you will need to do something similar to following:
 
     1. add number of nodes to graph first (first line)
-    2. for each following line (from second line to last line), add them as edge to graph    
+    2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph
     """
     f = open(file_path, encoding='utf-8')
     text = f.read()
     lines = text.split('\n')
-    #get the number of nodes
+    # get the number of nodes
     num_nodes = lines[0]
     for line in lines[1:]:
         if len(line) > 0:
-            #parse line into edge and and insert to graph
-            edge = list(map(int,(line.split(":"))))
+            # parse line into edge and and insert to graph
+            edge = list(map(int, (line.split(":"))))
             graph.add_edge(edge)
     f.close()
 
     return graph
 
+
 class Node(object):
     """Node represents basic unit of graph"""
+
     def __init__(self, data):
         self.data = data
 
     def __str__(self):
         return 'Node({})'.format(self.data)
+
     def __repr__(self):
         return 'Node({})'.format(self.data)
 
     def __eq__(self, other_node):
         return self.data == other_node.data
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __hash__(self):
         return hash(self.data)
 
+
 class Edge(object):
     """Edge represents basic unit of graph connecting between two edges"""
+
     def __init__(self, from_node, to_node, weight):
         self.from_node = from_node
         self.to_node = to_node
         self.weight = weight
+
     def __str__(self):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
+
     def __repr__(self):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
 
     def __eq__(self, other_node):
         return self.from_node == other_node.from_node and self.to_node == other_node.to_node and self.weight == other_node.weight
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __hash__(self):
         return hash((self.from_node, self.to_node, self.weight))
 
+
 class AdjacencyList(object):
     """
     AdjacencyList is one of the graph representation which uses adjacency list to
     store nodes and edges
     """
+
     def __init__(self):
         # adjacencyList should be a dictonary of node to edges
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
         pass
-        
+
     def neighbors(self, node):
         pass
 
@@ -113,12 +125,14 @@ class AdjacencyList(object):
         pass
 
     def add_edge(self, edge):
-       # if self.adjacency_list.has_key(hash(edge.from_node)):
+        # if self.adjacency_list.has_key(hash(edge.from_node)):
         #    if self.adjacency_list[hash(edge.from_node)].
 
         pass
+
     def remove_edge(self, edge):
         pass
+
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -151,8 +165,10 @@ class AdjacencyMatrix(object):
         """helper method to find node index"""
         pass
 
+
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
+
     def __init__(self):
         # implement your own list of edges and nodes
         self.edges = []
