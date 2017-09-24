@@ -36,18 +36,20 @@ def construct_graph_from_file(graph,file_path):
     2. for each following line (from second line to last line), add them as edge to graph    
     3. return the graph
     """
-    f = open(file_path, encoding='utf-8')
+    """f = open(file_path, encoding='utf-8')
     text = f.read()
     lines = text.split('\n')
     #get the number of nodes
     num_nodes = lines[0]
+    for node in num_nodes:
+
     for line in lines[1:]:
         if len(line) > 0:
             #parse line into edge and and insert to graph
-            edge = list(map(int,(line.split(":"))))
+            edge = Edge(map(int,(line.split(":"))))
             graph.add_edge(edge)
-    f.close()
-
+    f.close()"""
+            
     return graph
 
 class Node(object):
@@ -105,18 +107,15 @@ class AdjacencyList(object):
     def add_node(self, node):
         if self.adjacency_list.has_key(hash(node.data)):
             return False
-        else:
-            self.adjacency_list[hash(node.data)] = list()
-            return True
+
 
     def remove_node(self, node):
         pass
 
     def add_edge(self, edge):
-       # if self.adjacency_list.has_key(hash(edge.from_node)):
-        #    if self.adjacency_list[hash(edge.from_node)].
-
         pass
+
+
     def remove_edge(self, edge):
         pass
 
