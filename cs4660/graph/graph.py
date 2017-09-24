@@ -75,7 +75,6 @@ class Edge(object):
     def __hash__(self):
         return hash((self.from_node, self.to_node, self.weight))
 
-
 class AdjacencyList(object):
     """
     AdjacencyList is one of the graph representation which uses adjacency list to
@@ -92,7 +91,11 @@ class AdjacencyList(object):
         pass
 
     def add_node(self, node):
-        pass
+        if hash(node.data) not in self.adjacency_list:
+            self.adjacency_list[hash(node.data)] = []
+            return true
+        else:
+            return false
        
 
     def remove_node(self, node):
