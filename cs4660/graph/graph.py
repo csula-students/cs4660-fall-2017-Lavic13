@@ -36,22 +36,24 @@ def construct_graph_from_file(graph,file_path):
     2. for each following line (from second line to last line), add them as edge to graph    
     3. return the graph
     """
-    """f = open(file_path, encoding='utf-8')
+    f = open(file_path, encoding='utf-8')
     text = f.read()
     lines = text.split('\n')
-    #get the number of nodes
+    # get the number of nodes
     num_nodes = lines[0]
-    for node in num_nodes:
 
     for line in lines[1:]:
         if len(line) > 0:
-            #parse line into edge and and insert to graph
-            edge = Edge(map(int,(line.split(":"))))
+            # parse line into edge and and insert to graph
+            edge_values = line.split(':')
+            edge = Edge(Node(int(edge_values[0])), Node(int(edge_values[1])), int(edge_values[2]))
+            node = Node(edge.from_node)
+            graph.add_node(node)
             graph.add_edge(edge)
-    f.close()"""
-            
-    return graph
 
+    f.close()
+
+    return graph
 class Node(object):
     """Node represents basic unit of graph"""
     def __init__(self, data):
@@ -105,8 +107,7 @@ class AdjacencyList(object):
         pass
 
     def add_node(self, node):
-        if self.adjacency_list.has_key(hash(node.data)):
-            return False
+        pass
 
 
     def remove_node(self, node):
@@ -148,7 +149,7 @@ class AdjacencyMatrix(object):
 
     def __get_node_index(self, node):
         """helper method to find node index"""
-        pass
+        return self.nodes.index(node)
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
@@ -164,7 +165,11 @@ class ObjectOriented(object):
         pass
 
     def add_node(self, node):
-        pass
+        if node in self.nodes:
+		return False
+	   else:
+           self.nodes.append(node) 
+		return True
 
     def remove_node(self, node):
         pass
@@ -173,5 +178,5 @@ class ObjectOriented(object):
         pass
 
     def remove_edge(self, edge):
-        pass
+        
 
