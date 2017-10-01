@@ -97,7 +97,7 @@ class AdjacencyList(object):
     store nodes and edges
     """
     def __init__(self):
-        # adjacencyList should be a dictonary of node to edges
+        # adjacencyList should be a dictionary of node to edges
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
@@ -151,6 +151,7 @@ class AdjacencyMatrix(object):
         """helper method to find node index"""
         return self.nodes.index(node)
 
+
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
     def __init__(self):
@@ -165,11 +166,7 @@ class ObjectOriented(object):
         pass
 
     def add_node(self, node):
-        if node in self.nodes:
-		return False
-	   else:
-           self.nodes.append(node) 
-		return True
+        pass
 
     def remove_node(self, node):
         pass
@@ -178,5 +175,6 @@ class ObjectOriented(object):
         pass
 
     def remove_edge(self, edge):
+        pass
         
 
