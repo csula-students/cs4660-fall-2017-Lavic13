@@ -110,7 +110,12 @@ class AdjacencyList(object):
         pass
 
     def add_node(self, node):
-        pass
+        # use hash to determine if it exits
+        if node.__hash__() in self.adjacency_list:
+            return False
+        else:
+            self.adjacency_list[node.__hash__()] = []
+            return True
 
     def remove_node(self, node):
         pass
@@ -138,7 +143,11 @@ class AdjacencyMatrix(object):
         pass
 
     def add_node(self, node):
-        pass
+        if node in self.nodes:
+            return False
+        else:
+            self.nodes.append(node)
+            return True
 
     def remove_node(self, node):
         pass
