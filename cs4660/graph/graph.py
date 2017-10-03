@@ -32,7 +32,7 @@ def construct_graph_from_file(graph, file_path):
     2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph
     """
-    f = open(file_path)
+    f = open(file_path, 'r')
     text = f.read()
     lines = text.split('\n')
 
@@ -44,9 +44,10 @@ def construct_graph_from_file(graph, file_path):
         if len(line) > 0:
             # parse edge, then add to graph
             parts = list(map(int, line.split(':')))
-            n_edges = (Edge(Node(parts[0]), Node(parts[1]), parts[2]))
+            n_edges = (Edge(Node(int(parts[0])), Node(int(parts[1])), int(parts[2])))
             graph.add_edge(n_edges)
 
+    f.close()
     return graph
 
 
@@ -85,7 +86,8 @@ class Edge(object):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
 
     def __eq__(self, other_node):
-        return self.from_node == other_node.from_node and self.to_node == other_node.to_node and self.weight == other_node.weight
+        return self.from_node == other_node.from_node and self.to_node == other_node.to_node \
+               and self.weight == other_node.weight
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -110,12 +112,7 @@ class AdjacencyList(object):
         pass
 
     def add_node(self, node):
-        # use hash to determine if it exits
-        if node.__hash__() in self.adjacency_list:
-            return False
-        else:
-            self.adjacency_list[node.__hash__()] = []
-            return True
+        pass
 
     def remove_node(self, node):
         pass
@@ -143,11 +140,7 @@ class AdjacencyMatrix(object):
         pass
 
     def add_node(self, node):
-        if node in self.nodes:
-            return False
-        else:
-            self.nodes.append(node)
-            return True
+        pass
 
     def remove_node(self, node):
         pass
@@ -171,27 +164,74 @@ class ObjectOriented(object):
         self.nodes = []
 
     def adjacent(self, node_1, node_2):
-        pass
+        for edge in self.edges:
+            if edge.from_node == node_1 and edge.to_node == node_2:
+                return True
+        return False
 
     def neighbors(self, node):
-        pass
+        neighboring_nodes = []
+        for edge in self.edges:
+            if edge.from_node == node:
+                neighboring_nodes.append(edge.to_node)
+        return neighboring_nodes
 
     def add_node(self, node):
         if node in self.nodes:
             return False
         else:
             self.nodes.append(node)
-            return True
+        return True
 
     def remove_node(self, node):
-        pass
+        if node in self.nodes:
+            self.nodes.remove(node)
+            for edge in self.edges:
+                if edge.from_node == node or edge.to_node == node:
+                    self.edges.remove(edge)
+            return True
+        else:
+            return False
 
     def add_edge(self, edge):
-        if edge in self.edges:
-            return False
-        else:
+        if edge not in self.edges:
             self.edges.append(edge)
             return True
+        else:
+            return False
 
     def remove_edge(self, edge):
-        pass
+        if edge in self.edges:
+            self.edges.remove(edge)
+            return True
+        else:
+            return False
+
+    """def print_graph(self):
+        for i in self.nodes:
+            print(i)
+            for j in self.edges:
+                if i == j.from_node:
+                    print(j)"""
+
+
+"""graph1 = ObjectOriented()
+construct_graph_from_file(graph1, '../test/fixtures/graph-1.txt')
+if not graph1.add_node(Node(13)):
+    print('node already exists')
+else:
+    print('node was inserted')
+
+edge1 = Edge(Node(8), Node(11), int(7))
+#graph1.add_edge(edge)
+
+if not graph1.add_edge(edge1):
+    print('edge already exists')
+else:
+    print('edge was inserted')
+
+if not graph1.add_edge(edge1):
+    print('edge already exists')
+else:
+    print('edge was inserted')
+graph1.print_graph()"""
