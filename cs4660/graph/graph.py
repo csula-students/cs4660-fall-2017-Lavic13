@@ -86,8 +86,8 @@ class Edge(object):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
 
     def __eq__(self, other_node):
-        return self.from_node == other_node.from_node and self.to_node == other_node.to_node and self.weight == \
-                                                                                                 other_node.weight
+        return self.from_node == other_node.from_node and self.to_node == other_node.to_node \
+               and self.weight == other_node.weight
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -156,13 +156,20 @@ class AdjacencyList(object):
         else:
             return False
 
-    def distance(self, node_1, node_2):
-        if node_1 in self.adjacency_list:
-            for edge in self.adjacency_list[node_1]:
-                if edge.to_node == node_2:
-                    return edge.weight
-        return False
+    def print_graph(self):
+        if len(self.adjacency_list) != 0:
+            for i in self.adjacency_list:
+                print(self.adjacency_list[i])
+        print(self.adjacency_list.keys())
 
+    def distance(self, node_1, node_2):
+        for edge in self.adjacency_list[node_1]:
+            if edge.to_node == node_2:
+                return edge.weight
+    def get_edge(self, node_1, node_2):
+        for edge in self.adjacency_list[node_1]:
+            if edge.to_node == node_2:
+                return Edge(node_1, node_2, edge.weight)
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -240,20 +247,23 @@ class AdjacencyMatrix(object):
         else:
             return False
 
-    def distance(self, node_1, node_2):
-        if node_1 in self.nodes and node_2 in self.nodes:
-            f_index = self.__get_node_index(node_1)
-            t_index = self.__get_node_index(node_2)
-            if self.adjacency_matrix[f_index][t_index] == 0:
-                return 0
-            else:
-                return self.adjacency_matrix[f_index][t_index]
-        else:
-            return 0
-
     def __get_node_index(self, node):
         """helper method to find node index"""
         return self.nodes.index(node)
+
+    def print_matrix(self):
+        if len(self.nodes) != 0:
+            for i in self.adjacency_matrix:
+                print(i)
+        print(self.nodes)
+
+    def distance(self, node_1, node_2):
+        return self.adjacency_matrix[node_1][node_2]
+
+    def get_edge(self, node_1, node_2):
+        fi = self.__get_node_index(node_1)
+        ti = self.__get_node_index(node_2)
+        return Edge(node_1, node_2, self.adjacency_matrix[fi][ti])
 
 
 class ObjectOriented(object):
@@ -311,7 +321,22 @@ class ObjectOriented(object):
             return False
 
     def distance(self, node_1, node_2):
-        if node_1 in self.nodes and node_2 in self.nodes:
-            for edge in self.edges:
-                if node_1 == edge.from_node and node_2 in edge.to_node:
-                    return edge.weight
+        for edge in self.edges:
+            if edge.from_node == node_1 and edge.to_node == node_2:
+                return edge.weight
+
+    def get_edge(self, node_1, node_2):
+        for edge in self.edges:
+            if edge.from_node == node_1 and edge.to_node == node_2:
+                return Edge(node_1, node_2, edge.weight)
+
+
+
+
+graph1 = AdjacencyList()
+construct_graph_from_file(graph1, '../test/fixtures/graph-1.txt')
+graph1.print_graph()
+graph1.remove_node(Node(3))
+graph1.print_graph()
+graph1.remove_node(Node(10))
+graph1.print_graph()
