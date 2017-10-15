@@ -9,10 +9,13 @@ to f1f131f647621a4be7c71292e79613f9
 TODO: implement BFS
 TODO: implement Dijkstra utilizing the path with highest effect number
 """
-
+import sys
+sys.path.append('../')
+from graph import graph
 import json
 import codecs
 from collections import deque
+
 
 # http lib import for Python 2 and 3: alternative 4
 try:
@@ -54,34 +57,49 @@ def __json_request(target_url, body):
     return response
 
 
-def bfs(graph, start_node, dest_node):
+def bfs(graph, initial_node, dest_node):
+    # structures to keep track of parent, distance, visitied, to be visited
     parents = {}
     distances = {}
-    d = deque()
-    path = []
     visited = []
+    path_list = []
+    d = deque()
 
-    parents[start_node] = None
-    distances[start_node] = 0
+    # initialize parents and distance
+    parents[initial_node] = None
+    distances[initial_node] = 0
+    visited.append(initial_node)
+    d.append(initial_node)
 
-    d.append(start_node)
-    visited.append(start_node)
-
+    # while deque is not empty look for noeds to visit
     while len(d) != 0:
-        v = d.popleft()
-        for neighbor in graph.neighbors(v):
+        cur_n = d.popleft()
+        # look for current node's neighbors
+        for neighbor in graph.neighbors(cur_n):
             if neighbor not in visited:
                 visited.append(neighbor)
                 d.append(neighbor)
-                parents[neighbor] = v
-                distances[neighbor] = distances[v] + graph.distance(v, neighbor)
-            elif dest_node in visted:
+                # add currnet neighbor's distance and parant to respective dict's
+                parents[neighbor] = cur_n
+                distances[neighbor] = distances[cur_n] + graph.distance(cur_n, neighbor)
+
+            # break if dest node has been visited
+            if dest_node in visited:
                 break
-        for
+
+    # get the path of the dest_node back to start node
+    while parents[dest_node] is not None:
+        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
+        path_list.append(edge)
+        dest_node = parents[dest_node]
+
+    path_list.reverse()
+    return path_list
 
 
 
-def dijkstra_search(graph, initial_node, dest_node):
+
+def dijkstra_search(graph, start_node, dest_node):
     parents = {}
     distances = {}
     d = deque()
@@ -93,7 +111,7 @@ def dijkstra_search(graph, initial_node, dest_node):
 
     d.append(start_node)
     visited.append(start_node)
-    while len(d) != 0:
+    #while len(d) != 0:
     #have not complted
 if __name__ == "__main__":
     # Your code starts here

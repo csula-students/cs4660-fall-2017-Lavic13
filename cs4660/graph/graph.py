@@ -330,13 +330,3 @@ class ObjectOriented(object):
             if edge.from_node == node_1 and edge.to_node == node_2:
                 return Edge(node_1, node_2, edge.weight)
 
-
-
-
-graph1 = AdjacencyList()
-construct_graph_from_file(graph1, '../test/fixtures/graph-1.txt')
-graph1.print_graph()
-graph1.remove_node(Node(3))
-graph1.print_graph()
-graph1.remove_node(Node(10))
-graph1.print_graph()
