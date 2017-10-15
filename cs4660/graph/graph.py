@@ -313,5 +313,5 @@ class ObjectOriented(object):
     def distance(self, node_1, node_2):
         if node_1 in self.nodes and node_2 in self.nodes:
             for edge in self.edges:
-                if node_1 == edge.from_node and node_2 in edge.to_node:
+                if node_1 == edge.from_node and node_2 == edge.to_node:
                     return edge.weight

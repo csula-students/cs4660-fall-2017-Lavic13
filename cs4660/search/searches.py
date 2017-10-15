@@ -4,8 +4,7 @@ Searches module defines all different search algorithms
 import sys
 sys.path.append("../")
 from collections import deque
-import Queue
-from graph import Edge
+from graph.graph import Edge
 
 
 def bfs(graph, initial_node, dest_node):
