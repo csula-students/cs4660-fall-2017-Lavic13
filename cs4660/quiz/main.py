@@ -11,7 +11,7 @@ TODO: implement Dijkstra utilizing the path with highest effect number
 """
 import sys
 sys.path.append('../')
-from graph import graph
+from graph.graph import Edge
 import json
 import codecs
 from collections import deque
@@ -57,7 +57,7 @@ def __json_request(target_url, body):
     return response
 
 
-def bfs(graph, initial_node, dest_node):
+def bfs(initial_node, dest_node):
     # structures to keep track of parent, distance, visitied, to be visited
     parents = {}
     distances = {}
@@ -65,12 +65,31 @@ def bfs(graph, initial_node, dest_node):
     path_list = []
     d = deque()
 
+    parents[initial_node['id']] = None
+    visited.append(initial_node['id'])
+    d.append(initial_node)
+    distances[initial_node['id']] = 0
+
+    """
     # initialize parents and distance
     parents[initial_node] = None
     distances[initial_node] = 0
     visited.append(initial_node)
     d.append(initial_node)
+    """
 
+    while len(d) != 0:
+        cur_n = d.popleft()
+        for neighbor in cur_n['neighbors']:
+            if neighbor['id'] not in visited:
+                visited.append(neighbor['id'])
+                d.append(neighbor)
+                parents[neighbor['id']] = cur_n['id']
+                distances[neighbor['id']] = distances[cur_n['id']] + \
+                                            transition_state(cur_n['id'], neighbor['id'])['event']['effect']
+            if dest_node['id'] in visited:
+                break
+    """
     # while deque is not empty look for noeds to visit
     while len(d) != 0:
         cur_n = d.popleft()
@@ -86,7 +105,17 @@ def bfs(graph, initial_node, dest_node):
             # break if dest node has been visited
             if dest_node in visited:
                 break
+    """
+    """
+    while parents[dest_node['id']] != None:
+        edge = Edge(parents[dest_node['id']], dest_node['id'],
+                    transition_state(parents[dest_node['id']], dest_node['id']))
+        path_list.append(edge)
+        path_list.reverse()
+    return path_list
+    """
 
+"""
     # get the path of the dest_node back to start node
     while parents[dest_node] is not None:
         edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
@@ -95,26 +124,12 @@ def bfs(graph, initial_node, dest_node):
 
     path_list.reverse()
     return path_list
+    """
 
 
-
-
-def dijkstra_search(graph, start_node, dest_node):
-    parents = {}
-    distances = {}
-    d = deque()
-    path = []
-    visited = []
-
-    parents[start_node] = None
-    distances[start_node] = 0
-
-    d.append(start_node)
-    visited.append(start_node)
-    #while len(d) != 0:
-    #have not complted
 if __name__ == "__main__":
     # Your code starts here
     empty_room = get_state('7f3dc077574c013d98b2de8f735058b4')
-    print(empty_room)
-    print(transition_state(empty_room['id'], empty_room['neighbors'][0]['id']))
+    dark_room = get_state('f1f131f647621a4be7c71292e79613f9')
+    #print(transition_state(empty_room['id'], empty_room['neighbors'][1]['id'])['event']['effect'])
+    bfs(empty_room, dark_room)
