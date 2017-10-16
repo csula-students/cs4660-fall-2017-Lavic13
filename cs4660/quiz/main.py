@@ -147,6 +147,7 @@ if __name__ == "__main__":
 
     empty_room = get_state('7f3dc077574c013d98b2de8f735058b4')
     dark_room = get_state('f1f131f647621a4be7c71292e79613f9')
-    #bfsvalue = bfs(empty_room, dark_room)
-    #print bfsvalue
-
+    bfsvalue = bfs(empty_room, dark_room)
+    print bfsvalue
+    dvalue = Dijkstra(empty_room, dark_room)
+    print dvalue
