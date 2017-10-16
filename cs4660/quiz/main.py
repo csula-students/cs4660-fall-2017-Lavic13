@@ -57,45 +57,44 @@ def __json_request(target_url, body):
     return response
 
 
-def bfs(empty_room, dest_room ):
-    q = Queue.Queue()
-    distance = {}
-    parent = {}
+def bfs(empty_room, dest_room):
+    
+    parents = {}
+    distances = {}
     visited = []
-    path = []
+    path_list = []
+    d = deque()
 
-    parent[empty_room['id']] = None
-    distance[empty_room['id']] = 0
+    # initialize parents and distance
+    parents[initial_node] = None
+    distances[initial_node] = 0
+    visited.append(initial_node)
+    d.append(initial_node)
 
-    q.put(empty_room['id'])
+    # while deque is not empty look for noeds to visit
+    while len(d) != 0:
+        cur_n = d.popleft()
+        # look for current node's neighbors
+        for neighbor in graph.neighbors(cur_n):
+            if neighbor not in visited:
+                visited.append(neighbor)
+                d.append(neighbor)
+                # add currnet neighbor's distance and parant to respective dict's
+                parents[neighbor] = cur_n
+                distances[neighbor] = distances[cur_n] + graph.distance(cur_n, neighbor)
 
-    while q.qsize() > 0:
-        cur_node = q.get()
-        # check to see if all "nodes" were being put in
-        # print cur_node
-        cur_node_neighbors = get_state(cur_node)['neighbors']
-        for neighbors in cur_node_neighbors:
-            if neighbors['id'] not in visited:
-                visited.append(neighbors['id'])
-                parent[neighbors['id']] = cur_node
-                distance[neighbors['id']] = distance[cur_node] + \
-                                    transition_state(cur_node,neighbors['id'])['event']['effect']
-                q.put(neighbors['id'])
-        if dest_room in visited:
-            break
+            # break if dest node has been visited
+            if dest_node in visited:
+                break
 
-    while parent[dest_room['id']] is not None:
-        cur = dest_room['id']
-        par = parent[dest_room['id']]
-        cur_name = cur['location']['name']
-        cur_id = cur['id']
-        par_name = par['location']['name']
-        par_id = par['id']
-        value = transition_state(par, cur)['event']['effect']
-        path.append(par_name + par_id + " :" + cur_name + cur_id + " :" + value)
-        dest_room['id'] = parent[dest_room['id']]
+    # get the path of the dest_node back to start node
+    while parents[dest_node] is not None:
+        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
+        path_list.append(edge)
+        dest_node = parents[dest_node]
 
-    return distance[dest_room['id']]
+    path_list.reverse()
+    return path_list
 
 
 def Dijkstra(empty_room,dest_room):
