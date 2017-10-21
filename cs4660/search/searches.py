@@ -66,15 +66,14 @@ def dfs(graph, initial_node, dest_node):
     """
     parents = {}
     visited = {}
-    parents[initial_node] = None
     path_list = []
     r_dfs(graph, initial_node, visited, parents)
 
-    while parents[dest_node] is not None:
-        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
-        path_list.append(edge)
-        dest_node = parents[dest_node]
 
+    while dest_node != initial_node:
+        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
+        dest_node = parents[dest_node]
+        path_list.append(edge)
     path_list.reverse()
     return path_list
 
