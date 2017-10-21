@@ -49,13 +49,36 @@ def bfs(graph, initial_node, dest_node):
     path_list.reverse()
     return path_list
 
+
+def r_dfs(graph, c_n, vis, par):
+    for neighbor in graph.neighbors(c_n):
+        if neighbor not in vis:
+            vis[neighbor] = True
+            par[neighbor] = c_n
+            r_dfs(graph, c_n, vis, par)
+
+
 def dfs(graph, initial_node, dest_node):
     """
     Depth First Search
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-    pass
+    parents = {}
+    visited = {}
+    parents[initial_node] = None
+    path_list = []
+    r_dfs(graph, initial_node, visited, parents)
+
+    while parents[dest_node] is not None:
+        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
+        path_list.append(edge)
+        dest_node = parents[dest_node]
+
+    path_list.reverse()
+    return path_list
+
+
 
 def dijkstra_search(graph, initial_node, dest_node):
     """
@@ -63,27 +86,44 @@ def dijkstra_search(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-    q = []
-    distance = {}
-    parent = {}
-    visited = []
-    path = []
+    d = Queue.PriorityQueue()
+    distances = {}
+    parents = {}
+    path_list = []
 
-    parent[initial_node] = None
-    distance[initial_node] = 0
-    q.append((0, initial_node))
+    parents[initial_node] = None
+    distances[initial_node] = 0
+    d.put((0, initial_node))
 
-    while len(q) > 0:
-        node = q.pop()
+    while d:
+        # get tuple
+        node = d.get()
+        # get the actual node
         cur_node = node[1]
 
-        cur_node_neighbors = graph.neighbors(cur_node)
-        for neighbors in cur_node_neighbors:
-            if neighbors not in distance:
+    # begin looking for current node's nieghbor
+    # unable to read from here, but can in BFS???
+        for neighbors in graph.neighbors[cur_node]:
+            a_dist = distances[cur_node] + graph.distance(cur_node, neighbors)
+            if neighbors not in distances:
+                distances[neighbors] = graph.distance(cur_node, neighbors)
+                parents[neighbors] = cur_node
+                d.put(distances[neighbors],neighbors)
+                # check to see if current distance is greater
+            elif a_dist < distances[neighbors]:
+                distances[neighbors] = graph.distance(cur_node, neighbors)
+                parents[neighbors] = cur_node
+                d.put(distances[neighbors],neighbors)
+            elif cur_node == dest_node:
+                break
 
-            elif:
+    while parents[dest_node] is not None:
+        edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
+        path_list.append(edge)
+        dest_node = parents[dest_node]
 
-        q.sort()
+    path_list.reverse()
+    return path_list
 
 def a_star_search(graph, initial_node, dest_node):
     """
@@ -91,4 +131,10 @@ def a_star_search(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-pass
+    pass
+
+"""
+l = [(1, 2), (3, 4), (6, 7), (5, 10)]
+x = l.pop()
+print x
+"""

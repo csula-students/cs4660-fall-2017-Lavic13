@@ -244,10 +244,7 @@ class AdjacencyMatrix(object):
         if node_1 in self.nodes and node_2 in self.nodes:
             f_index = self.__get_node_index(node_1)
             t_index = self.__get_node_index(node_2)
-            if self.adjacency_matrix[f_index][t_index] == 0:
-                return 0
-            else:
-                return self.adjacency_matrix[f_index][t_index]
+            return self.adjacency_matrix[f_index][t_index]
         else:
             return 0
 
