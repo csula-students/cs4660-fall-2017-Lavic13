@@ -3,7 +3,7 @@ utils package is for some quick utility methods
 
 such as parsing
 """
-from graph import graph as g
+import graph as g
 from graph import Edge
 from graph import Node
 
@@ -51,7 +51,16 @@ def convert_edge_to_grid_actions(edges):
     e.g. Edge(Node(Tile(1, 2), Tile(2, 2), 1)) => "S"
     """
 
-    path
-
+    path = ""
+    """
     for edge in edges:
-    return ""
+        if edge.to_node.data.x - edge.from_node.data.x > 0:
+            path += "E"
+        elif edge.to_node.data.x - edge.from_node.data.x < 0:
+            path += "W"
+        elif edge.to_node.data.y - edge.from_node.data.y > 0:
+            path += "S"
+        elif edge.to_node.data.y - edge.from_node.data.y < 0:
+            path += "N"
+    """
+    return path
