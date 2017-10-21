@@ -3,6 +3,9 @@ utils package is for some quick utility methods
 
 such as parsing
 """
+from graph import graph as g
+from graph import Edge
+from graph import Node
 
 class Tile(object):
     """Node represents basic unit of graph"""
@@ -47,4 +50,8 @@ def convert_edge_to_grid_actions(edges):
 
     e.g. Edge(Node(Tile(1, 2), Tile(2, 2), 1)) => "S"
     """
+
+    path
+
+    for edge in edges:
     return ""

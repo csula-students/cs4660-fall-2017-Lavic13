@@ -32,8 +32,8 @@ def bfs(graph, initial_node, dest_node):
         # look for current node's neighbors
         for neighbor in graph.neighbors(cur_n):
             if neighbor not in visited:
-                visited.append(neighbor)
                 d.append(neighbor)
+                visited.append(neighbor)
                 # add currnet neighbor's distance and parant to respective dict's
                 parents[neighbor] = cur_n
                 distances[neighbor] = distances[cur_n] + graph.distance(cur_n, neighbor)
@@ -41,7 +41,30 @@ def bfs(graph, initial_node, dest_node):
             # break if dest node has been visited
             if dest_node in visited:
                 break
+            """
+            q = Queue.Queue()
+            distance = {}
+            parent = {}
+            visited = []
+            path = []
 
+            parent[empty_room['id']] = None
+            distance[empty_room['id']] = 0
+
+            q.put(empty_room['id'])
+
+            while q.qsize() > 0:
+                cur_node = q.get()
+                # check to see if all "nodes" were being put in
+                # print cur_node
+                cur_node_neighbors = get_state(cur_node)['neighbors']
+                # check for neighbors and  add to appropaite lists
+                for neighbors in cur_node_neighbors:
+                    if neighbors['id'] not in visited:
+                        visited.append(neighbors['id'])
+                        parent[neighbors['id']] = cur_node
+                        distance[neighbors['id']] = distance[cur_node]
+            """
     # get the path of the dest_node back to start node
     while parents[dest_node] is not None:
         edge = Edge(parents[dest_node], dest_node, graph.distance(parents[dest_node], dest_node))
